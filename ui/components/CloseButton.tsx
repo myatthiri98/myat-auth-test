@@ -1,16 +1,17 @@
 import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
-import { TouchableOpacity, StyleSheet } from 'react-native'
+import { TouchableOpacity, StyleSheet, ViewStyle } from 'react-native'
 import { T } from '@/ui/constants/theme'
 
 type CloseButtonProps = {
   onPress: () => void
+  style?: ViewStyle | ViewStyle[]
 }
 
-export const CloseButton = ({ onPress }: CloseButtonProps) => {
+export const CloseButton = ({ onPress, style }: CloseButtonProps) => {
   return (
     <TouchableOpacity
-      style={styles.closeButton}
+      style={[styles.closeButton, style]}
       onPress={onPress}
       activeOpacity={0.7}
     >
@@ -28,11 +29,9 @@ const styles = StyleSheet.create({
     width: T.size.backButton,
     height: T.size.backButton,
     borderRadius: T.border.radius.full,
-    backgroundColor: T.color.border,
+    backgroundColor: T.color.white,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: T.spacing.xl,
-    alignSelf: 'flex-end',
     ...T.shadow.medium,
   },
 })

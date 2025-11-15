@@ -1,14 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { StatusBar } from 'expo-status-bar'
 import React, { useEffect } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useAuth } from '@/core/auth/auth.context'
 import { signupSchema, type SignupFormData } from '@/core/auth/auth.schemas'
+import { BackgroundWrapper } from '@/ui/components/BackgroundWrapper'
 import { Button } from '@/ui/components/Button'
 import { CloseButton } from '@/ui/components/CloseButton'
+import { CurvedCard } from '@/ui/components/CurvedCard'
 import { PasswordInput } from '@/ui/components/PasswordInput'
 import { TextInput } from '@/ui/components/TextInput'
 import { T } from '@/ui/constants/theme'
@@ -22,6 +26,7 @@ type SignupScreenNavigationProp = NativeStackNavigationProp<
 export const SignupScreen = () => {
   const navigation = useNavigation<SignupScreenNavigationProp>()
   const { signup, isLoading } = useAuth()
+  const insets = useSafeAreaInsets()
 
   const {
     control,
@@ -65,122 +70,140 @@ export const SignupScreen = () => {
   }
 
   return (
-    <KeyboardAwareScrollView
-      style={styles.container}
-      contentContainerStyle={styles.scrollContent}
-      keyboardShouldPersistTaps="handled"
-    >
-      <CloseButton onPress={() => navigation.goBack()} />
+    <BackgroundWrapper>
+      <StatusBar style="dark" />
+      <CloseButton
+        onPress={() => navigation.goBack()}
+        style={[styles.closeButton, { top: insets.top + T.spacing.md }]}
+      />
+      <KeyboardAwareScrollView
+        style={styles.container}
+        contentContainerStyle={[
+          styles.scrollContent,
+          {
+            paddingTop: insets.top + T.spacing.massive,
+            paddingBottom: T.spacing.xxl,
+          },
+        ]}
+        keyboardShouldPersistTaps="handled"
+      >
+        <CurvedCard style={styles.card}>
+          <View style={styles.header}>
+            <Text style={styles.title}>Sign up</Text>
+            <Text style={styles.subtitle}>Sign up to get started</Text>
+          </View>
 
-      <View style={styles.header}>
-        <Text style={styles.title}>{`Create Account`}</Text>
-        <Text style={styles.subtitle}>{`Sign up to get started`}</Text>
-      </View>
-
-      <View style={styles.form}>
-        <Controller
-          control={control}
-          name="name"
-          render={({ field }) => (
-            <TextInput
-              label="Name"
-              value={field.value}
-              onChangeText={field.onChange}
-              onBlur={field.onBlur}
-              error={errors.name?.message}
-              autoCapitalize="words"
-              autoComplete="name"
+          <View style={styles.form}>
+            <Controller
+              control={control}
+              name="name"
+              render={({ field }) => (
+                <TextInput
+                  label="Full Name"
+                  value={field.value}
+                  onChangeText={field.onChange}
+                  onBlur={field.onBlur}
+                  error={errors.name?.message}
+                  autoCapitalize="words"
+                  autoComplete="name"
+                />
+              )}
             />
-          )}
-        />
 
-        <Controller
-          control={control}
-          name="email"
-          render={({ field }) => (
-            <TextInput
-              label="Email"
-              value={field.value}
-              onChangeText={field.onChange}
-              onBlur={field.onBlur}
-              error={errors.email?.message}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoComplete="email"
+            <Controller
+              control={control}
+              name="email"
+              render={({ field }) => (
+                <TextInput
+                  label="Enter Email"
+                  value={field.value}
+                  onChangeText={field.onChange}
+                  onBlur={field.onBlur}
+                  error={errors.email?.message}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoComplete="email"
+                />
+              )}
             />
-          )}
-        />
 
-        <Controller
-          control={control}
-          name="password"
-          render={({ field }) => (
-            <PasswordInput
-              label="Password"
-              value={field.value}
-              onChangeText={field.onChange}
-              onBlur={field.onBlur}
-              error={errors.password?.message}
-              autoComplete="password-new"
+            <Controller
+              control={control}
+              name="password"
+              render={({ field }) => (
+                <PasswordInput
+                  label="Password"
+                  value={field.value}
+                  onChangeText={field.onChange}
+                  onBlur={field.onBlur}
+                  error={errors.password?.message}
+                  autoComplete="password-new"
+                />
+              )}
             />
-          )}
-        />
 
-        <Controller
-          control={control}
-          name="confirmPassword"
-          render={({ field }) => (
-            <PasswordInput
-              label="Confirm Password"
-              value={field.value}
-              onChangeText={field.onChange}
-              onBlur={field.onBlur}
-              error={errors.confirmPassword?.message}
-              autoComplete="off"
-              showCheckIcon={passwordsMatch}
+            <Controller
+              control={control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <PasswordInput
+                  label="Confirm Password"
+                  value={field.value}
+                  onChangeText={field.onChange}
+                  onBlur={field.onBlur}
+                  error={errors.confirmPassword?.message}
+                  autoComplete="off"
+                  showCheckIcon={passwordsMatch}
+                />
+              )}
             />
-          )}
-        />
 
-        <Button
-          title="Sign Up"
-          onPress={handleSubmit(onSubmit)}
-          loading={isLoading}
-          disabled={isLoading}
-          style={styles.signupButton}
-        />
+            <Button
+              title="Sign up"
+              onPress={handleSubmit(onSubmit)}
+              loading={isLoading}
+              disabled={isLoading}
+              style={styles.signupButton}
+            />
 
-        <View style={styles.loginContainer}>
-          <Text style={styles.loginText}>{`Already have an account? `}</Text>
-          <TouchableOpacity onPress={onLoginPress}>
-            <Text style={styles.loginLink}>{`Login`}</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </KeyboardAwareScrollView>
+            <View style={styles.loginContainer}>
+              <Text style={styles.loginText}>Already have an account? </Text>
+              <TouchableOpacity onPress={onLoginPress}>
+                <Text style={styles.loginLink}>Sign in</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </CurvedCard>
+      </KeyboardAwareScrollView>
+    </BackgroundWrapper>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: T.color.background,
   },
   scrollContent: {
     flexGrow: 1,
-    paddingHorizontal: T.layout.screenPadding,
-    paddingTop: T.spacing.massive,
-    paddingBottom: T.layout.sectionSpacing,
+    justifyContent: 'flex-end',
+  },
+  closeButton: {
+    position: 'absolute',
+    right: T.layout.screenPadding,
+    zIndex: 100,
+  },
+  card: {
+    marginTop: T.spacing.lg,
   },
   header: {
-    marginBottom: T.layout.sectionSpacing,
+    marginBottom: T.spacing.xl,
   },
   title: {
     fontSize: T.font.size.huge,
     fontWeight: T.font.weight.bold,
     color: T.color.textPrimary,
     marginBottom: T.spacing.sm,
-    letterSpacing: -1,
+    letterSpacing: -0.5,
   },
   subtitle: {
     fontSize: T.font.size.md,
@@ -191,12 +214,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   signupButton: {
-    marginTop: T.spacing.lg,
+    marginTop: T.spacing.xl,
   },
   loginContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: T.spacing.xxl,
+    paddingBottom: T.spacing.lg,
   },
   loginText: {
     fontSize: T.font.size.sm,

@@ -22,6 +22,46 @@ const getLabelStyles = (isFocused: boolean, error?: string) => [
   error && styles.labelError,
 ]
 
+type IconButtonProps = {
+  showCheckIcon: boolean
+  isSecure: boolean
+  isFocused: boolean
+  onToggle: () => void
+}
+
+const IconButton = ({
+  showCheckIcon,
+  isSecure,
+  isFocused,
+  onToggle,
+}: IconButtonProps) => {
+  if (showCheckIcon) {
+    return (
+      <View style={styles.iconButton}>
+        <Ionicons
+          name="checkmark-circle"
+          size={T.size.icon.md}
+          color={T.color.success}
+        />
+      </View>
+    )
+  }
+
+  return (
+    <Pressable
+      style={styles.iconButton}
+      onPress={onToggle}
+      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+    >
+      <Ionicons
+        name={isSecure ? 'eye-off-outline' : 'eye-outline'}
+        size={T.size.icon.md}
+        color={isFocused ? T.color.primary : T.color.textSecondary}
+      />
+    </Pressable>
+  )
+}
+
 export const PasswordInput = forwardRef<RNTextInput, PasswordInputProps>(
   (
     {
@@ -77,27 +117,12 @@ export const PasswordInput = forwardRef<RNTextInput, PasswordInputProps>(
             textContentType="none"
             {...props}
           />
-          {showCheckIcon ? (
-            <View style={styles.iconButton}>
-              <Ionicons
-                name="checkmark-circle"
-                size={T.size.icon.md}
-                color={T.color.success}
-              />
-            </View>
-          ) : (
-            <Pressable
-              style={styles.iconButton}
-              onPress={toggleSecure}
-              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-            >
-              <Ionicons
-                name={isSecure ? 'eye-off-outline' : 'eye-outline'}
-                size={T.size.icon.md}
-                color={isFocused ? T.color.primary : T.color.textSecondary}
-              />
-            </Pressable>
-          )}
+          <IconButton
+            showCheckIcon={showCheckIcon}
+            isSecure={isSecure}
+            isFocused={isFocused}
+            onToggle={toggleSecure}
+          />
         </View>
         {error && <Text style={styles.errorText}>{error}</Text>}
       </View>
@@ -131,8 +156,8 @@ const styles = StyleSheet.create({
     borderColor: T.color.border,
     borderRadius: T.border.radius.md,
     backgroundColor: T.color.white,
-    paddingHorizontal: T.spacing.lg,
-    paddingVertical: T.spacing.lg,
+    paddingHorizontal: T.spacing.md,
+    paddingVertical: T.spacing.md,
     paddingRight: 48,
     fontSize: T.font.size.md,
     color: T.color.textPrimary,
