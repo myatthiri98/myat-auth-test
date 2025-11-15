@@ -13,6 +13,7 @@ import { T } from '@/ui/constants/theme'
 type PasswordInputProps = Omit<TextInputProps, 'secureTextEntry'> & {
   label?: string
   error?: string
+  showCheckIcon?: boolean
 }
 
 const getLabelStyles = (isFocused: boolean, error?: string) => [
@@ -31,6 +32,7 @@ export const PasswordInput = forwardRef<RNTextInput, PasswordInputProps>(
       onFocus,
       onBlur,
       placeholder,
+      showCheckIcon = false,
       ...props
     },
     ref,
@@ -72,19 +74,30 @@ export const PasswordInput = forwardRef<RNTextInput, PasswordInputProps>(
             placeholderTextColor={T.color.textTertiary}
             editable={true}
             autoCorrect={false}
+            textContentType="none"
             {...props}
           />
-          <Pressable
-            style={styles.iconButton}
-            onPress={toggleSecure}
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-          >
-            <Ionicons
-              name={isSecure ? 'eye-off-outline' : 'eye-outline'}
-              size={T.size.icon.md}
-              color={isFocused ? T.color.primary : T.color.textSecondary}
-            />
-          </Pressable>
+          {showCheckIcon ? (
+            <View style={styles.iconButton}>
+              <Ionicons
+                name="checkmark-circle"
+                size={T.size.icon.md}
+                color={T.color.success}
+              />
+            </View>
+          ) : (
+            <Pressable
+              style={styles.iconButton}
+              onPress={toggleSecure}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+              <Ionicons
+                name={isSecure ? 'eye-off-outline' : 'eye-outline'}
+                size={T.size.icon.md}
+                color={isFocused ? T.color.primary : T.color.textSecondary}
+              />
+            </Pressable>
+          )}
         </View>
         {error && <Text style={styles.errorText}>{error}</Text>}
       </View>

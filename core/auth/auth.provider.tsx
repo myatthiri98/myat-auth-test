@@ -9,7 +9,7 @@ import {
 import { loginUser } from '@/core/auth/usecases/login.usecase'
 import { logoutUser } from '@/core/auth/usecases/logout.usecase'
 import { signupUser } from '@/core/auth/usecases/signup.usecase'
-import { showErrorToast } from '@/ui/utils/toast'
+import { showErrorToast, showSuccessToast } from '@/ui/utils/toast'
 
 type AuthProviderProps = {
   children: ReactNode
@@ -46,6 +46,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
       const loggedInUser = await loginUser(credentials, dependencies)
       setUser(loggedInUser)
       await authStorage.saveUser(loggedInUser)
+      showSuccessToast('You have successfully logged in!', 'Login Success')
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Login failed'
       setError(errorMessage)
@@ -64,6 +65,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
       const newUser = await signupUser(credentials, dependencies)
       setUser(newUser)
       await authStorage.saveUser(newUser)
+      showSuccessToast('Account created successfully!', 'Signup Success')
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Signup failed'
       setError(errorMessage)

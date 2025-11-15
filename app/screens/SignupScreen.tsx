@@ -29,6 +29,7 @@ export const SignupScreen = () => {
     formState: { errors },
     clearErrors,
     reset,
+    watch,
   } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
     mode: 'onSubmit',
@@ -37,8 +38,15 @@ export const SignupScreen = () => {
       name: '',
       email: '',
       password: '',
+      confirmPassword: '',
     },
   })
+
+  const password = watch('password')
+  const confirmPassword = watch('confirmPassword')
+  const passwordsMatch = Boolean(
+    password && confirmPassword && password === confirmPassword,
+  )
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -113,7 +121,23 @@ export const SignupScreen = () => {
               onChangeText={field.onChange}
               onBlur={field.onBlur}
               error={errors.password?.message}
-              autoComplete="password"
+              autoComplete="password-new"
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <PasswordInput
+              label="Confirm Password"
+              value={field.value}
+              onChangeText={field.onChange}
+              onBlur={field.onBlur}
+              error={errors.confirmPassword?.message}
+              autoComplete="off"
+              showCheckIcon={passwordsMatch}
             />
           )}
         />
