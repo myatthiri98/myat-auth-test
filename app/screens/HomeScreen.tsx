@@ -36,66 +36,62 @@ export const HomeScreen = () => {
         </View>
       </ScaleIn>
 
-      <FadeUp delay={300}>
-        <View style={styles.content}>
-          <View style={styles.welcomeContainer}>
-            <Text style={styles.welcomeText}>Welcome back!</Text>
-            <Text style={styles.userName}>{user.name}</Text>
-          </View>
-
-          <View style={styles.infoCard}>
-            <View style={styles.infoIconContainer}>
-              <Ionicons
-                name="person-outline"
-                size={T.size.icon.md}
-                color={T.color.primary}
-              />
-            </View>
-            <View style={styles.infoContent}>
-              <Text style={styles.infoLabel}>Name</Text>
-              <Text style={styles.infoValue}>{user.name}</Text>
-            </View>
-          </View>
-
-          <View style={styles.infoCard}>
-            <View style={styles.infoIconContainer}>
-              <Ionicons
-                name="mail-outline"
-                size={T.size.icon.md}
-                color={T.color.primary}
-              />
-            </View>
-            <View style={styles.infoContent}>
-              <Text style={styles.infoLabel}>Email</Text>
-              <Text style={styles.infoValue}>{user.email}</Text>
-            </View>
-          </View>
-
-          <View style={styles.infoCard}>
-            <View style={styles.infoIconContainer}>
-              <Ionicons
-                name="shield-checkmark-outline"
-                size={T.size.icon.md}
-                color={T.color.success}
-              />
-            </View>
-            <View style={styles.infoContent}>
-              <Text style={styles.infoLabel}>Status</Text>
-              <Text style={[styles.infoValue, styles.statusActive]}>
-                Active
-              </Text>
-            </View>
-          </View>
-
-          <Button
-            title="Logout"
-            onPress={() => setShowLogoutModal(true)}
-            loading={isLoading}
-            variant="outline"
-            style={styles.logoutButton}
-          />
+      <View style={styles.content}>
+        <View style={styles.welcomeContainer}>
+          <Text style={styles.welcomeText}>Welcome!</Text>
+          <Text style={styles.userName}>{user.name}</Text>
         </View>
-      </FadeUp>
+
+        <View style={styles.infoCard}>
+          <View style={styles.infoIconContainer}>
+            <Ionicons
+              name="person-outline"
+              size={T.size.icon.md}
+              color={T.color.primary}
+            />
+          </View>
+          <View style={styles.infoContent}>
+            <Text style={styles.infoLabel}>Name</Text>
+            <Text style={styles.infoValue}>{user.name}</Text>
+          </View>
+        </View>
+
+        <View style={styles.infoCard}>
+          <View style={styles.infoIconContainer}>
+            <Ionicons
+              name="mail-outline"
+              size={T.size.icon.md}
+              color={T.color.primary}
+            />
+          </View>
+          <View style={styles.infoContent}>
+            <Text style={styles.infoLabel}>Email</Text>
+            <Text style={styles.infoValue}>{user.email}</Text>
+          </View>
+        </View>
+
+        <View style={styles.infoCard}>
+          <View style={styles.infoIconContainer}>
+            <Ionicons
+              name="shield-checkmark-outline"
+              size={T.size.icon.md}
+              color={T.color.success}
+            />
+          </View>
+          <View style={styles.infoContent}>
+            <Text style={styles.infoLabel}>Status</Text>
+            <Text style={[styles.infoValue, styles.statusActive]}>Active</Text>
+          </View>
+        </View>
+
+        <Button
+          title="Logout"
+          onPress={() => setShowLogoutModal(true)}
+          loading={isLoading}
+          variant="outline"
+          style={styles.logoutButton}
+        />
+      </View>
 
       <ConfirmationModal
         visible={showLogoutModal}

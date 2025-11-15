@@ -52,27 +52,23 @@ export const TextInput = forwardRef<RNTextInput, CustomTextInputProps>(
             {label}
           </Text>
         )}
-        <View
+        <RNTextInput
+          ref={ref}
           style={[
-            styles.inputContainer,
-            isFocused && styles.inputContainerFocused,
-            error && styles.inputContainerError,
+            styles.input,
+            isFocused && styles.inputFocused,
+            error && styles.inputError,
           ]}
-        >
-          <RNTextInput
-            ref={ref}
-            style={styles.input}
-            value={value}
-            onChangeText={onChangeText}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            placeholder={placeholder || label}
-            placeholderTextColor={T.color.textTertiary}
-            editable={true}
-            autoCorrect={false}
-            {...props}
-          />
-        </View>
+          value={value}
+          onChangeText={onChangeText}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          placeholder={placeholder || label}
+          placeholderTextColor={T.color.textTertiary}
+          editable={true}
+          autoCorrect={false}
+          {...props}
+        />
         {error && <Text style={styles.errorText}>{error}</Text>}
       </View>
     )
@@ -97,27 +93,23 @@ const styles = StyleSheet.create({
   labelError: {
     color: T.color.error,
   },
-  inputContainer: {
+  input: {
     borderWidth: T.border.width.medium,
     borderColor: T.color.border,
     borderRadius: T.border.radius.md,
     backgroundColor: T.color.white,
     paddingHorizontal: T.spacing.lg,
-    minHeight: T.size.input.height,
-    justifyContent: 'center',
+    paddingVertical: T.spacing.lg,
+    fontSize: T.font.size.md,
+    color: T.color.textPrimary,
+    height: T.size.input.height,
   },
-  inputContainerFocused: {
+  inputFocused: {
     borderColor: T.color.borderFocus,
     ...T.shadow.small,
   },
-  inputContainerError: {
+  inputError: {
     borderColor: T.color.errorBorder,
-  },
-  input: {
-    fontSize: T.font.size.md,
-    color: T.color.textPrimary,
-    paddingVertical: T.spacing.lg,
-    paddingHorizontal: 0,
   },
   errorText: {
     color: T.color.error,

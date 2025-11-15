@@ -3,7 +3,7 @@ import React, { forwardRef, useState } from 'react'
 import {
   TextInput as RNTextInput,
   View,
-  TouchableOpacity,
+  Pressable,
   Text,
   StyleSheet,
   TextInputProps,
@@ -19,12 +19,6 @@ const getLabelStyles = (isFocused: boolean, error?: string) => [
   styles.label,
   isFocused && styles.labelFocused,
   error && styles.labelError,
-]
-
-const getInputContainerStyles = (isFocused: boolean, error?: string) => [
-  styles.inputContainer,
-  isFocused && styles.inputContainerFocused,
-  error && styles.inputContainerError,
 ]
 
 export const PasswordInput = forwardRef<RNTextInput, PasswordInputProps>(
@@ -61,10 +55,14 @@ export const PasswordInput = forwardRef<RNTextInput, PasswordInputProps>(
     return (
       <View style={styles.container}>
         {label && <Text style={getLabelStyles(isFocused, error)}>{label}</Text>}
-        <View style={getInputContainerStyles(isFocused, error)}>
+        <View style={styles.inputWrapper}>
           <RNTextInput
             ref={ref}
-            style={styles.input}
+            style={[
+              styles.input,
+              isFocused && styles.inputFocused,
+              error && styles.inputError,
+            ]}
             value={value}
             onChangeText={onChangeText}
             onFocus={handleFocus}
@@ -76,17 +74,17 @@ export const PasswordInput = forwardRef<RNTextInput, PasswordInputProps>(
             autoCorrect={false}
             {...props}
           />
-          <TouchableOpacity
+          <Pressable
             style={styles.iconButton}
             onPress={toggleSecure}
-            activeOpacity={0.7}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
             <Ionicons
               name={isSecure ? 'eye-off-outline' : 'eye-outline'}
               size={T.size.icon.md}
               color={isFocused ? T.color.primary : T.color.textSecondary}
             />
-          </TouchableOpacity>
+          </Pressable>
         </View>
         {error && <Text style={styles.errorText}>{error}</Text>}
       </View>
@@ -112,34 +110,38 @@ const styles = StyleSheet.create({
   labelError: {
     color: T.color.error,
   },
-  inputContainer: {
+  inputWrapper: {
+    position: 'relative',
+  },
+  input: {
     borderWidth: T.border.width.medium,
     borderColor: T.color.border,
     borderRadius: T.border.radius.md,
     backgroundColor: T.color.white,
     paddingHorizontal: T.spacing.lg,
-    minHeight: T.size.input.height,
-    justifyContent: 'center',
-    flexDirection: 'row',
-    alignItems: 'center',
+    paddingVertical: T.spacing.lg,
+    paddingRight: 48,
+    fontSize: T.font.size.md,
+    color: T.color.textPrimary,
+    height: T.size.input.height,
   },
-  inputContainerFocused: {
+  inputFocused: {
     borderColor: T.color.borderFocus,
     ...T.shadow.small,
   },
-  inputContainerError: {
+  inputError: {
     borderColor: T.color.errorBorder,
   },
-  input: {
-    flex: 1,
-    fontSize: T.font.size.md,
-    color: T.color.textPrimary,
-    paddingVertical: T.spacing.lg,
-    paddingHorizontal: 0,
-  },
   iconButton: {
-    padding: T.spacing.sm,
-    marginLeft: T.spacing.xs,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    height: T.size.input.height,
+    width: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+    elevation: 10,
   },
   errorText: {
     color: T.color.error,

@@ -1,4 +1,3 @@
-import { Ionicons } from '@expo/vector-icons'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -9,6 +8,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-controller'
 import { useAuth } from '@/core/auth/auth.context'
 import { signupSchema, type SignupFormData } from '@/core/auth/auth.schemas'
 import { Button } from '@/ui/components/Button'
+import { CloseButton } from '@/ui/components/CloseButton'
 import { PasswordInput } from '@/ui/components/PasswordInput'
 import { TextInput } from '@/ui/components/TextInput'
 import { T } from '@/ui/constants/theme'
@@ -41,7 +41,6 @@ export const SignupScreen = () => {
   })
 
   useEffect(() => {
-    // Reset form when screen is focused
     const unsubscribe = navigation.addListener('focus', () => {
       reset()
       clearErrors()
@@ -50,11 +49,11 @@ export const SignupScreen = () => {
   }, [navigation, reset, clearErrors])
 
   const onSubmit = async (data: SignupFormData) => {
-    try {
-      await signup(data)
-    } catch {
-      // Error handled by auth context
-    }
+    await signup(data)
+  }
+
+  const onLoginPress = () => {
+    navigation.navigate('Login')
   }
 
   return (
@@ -63,16 +62,7 @@ export const SignupScreen = () => {
       contentContainerStyle={styles.scrollContent}
       keyboardShouldPersistTaps="handled"
     >
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => navigation.goBack()}
-      >
-        <Ionicons
-          name="close"
-          size={T.size.icon.md}
-          color={T.color.textPrimary}
-        />
-      </TouchableOpacity>
+      <CloseButton onPress={() => navigation.goBack()} />
 
       <View style={styles.header}>
         <Text style={styles.title}>Create Account</Text>
@@ -83,67 +73,49 @@ export const SignupScreen = () => {
         <Controller
           control={control}
           name="name"
-          render={({ field: { onChange, onBlur, value } }) => {
-            const handleChange = (text: string) => {
-              clearErrors('name')
-              onChange(text)
-            }
-            return (
-              <TextInput
-                label="Name"
-                value={value}
-                onChangeText={handleChange}
-                onBlur={onBlur}
-                error={errors.name?.message}
-                autoCapitalize="words"
-                autoComplete="name"
-              />
-            )
-          }}
+          render={({ field }) => (
+            <TextInput
+              label="Name"
+              value={field.value}
+              onChangeText={field.onChange}
+              onBlur={field.onBlur}
+              error={errors.name?.message}
+              autoCapitalize="words"
+              autoComplete="name"
+            />
+          )}
         />
 
         <Controller
           control={control}
           name="email"
-          render={({ field: { onChange, onBlur, value } }) => {
-            const handleChange = (text: string) => {
-              clearErrors('email')
-              onChange(text)
-            }
-            return (
-              <TextInput
-                label="Email"
-                value={value}
-                onChangeText={handleChange}
-                onBlur={onBlur}
-                error={errors.email?.message}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoComplete="email"
-              />
-            )
-          }}
+          render={({ field }) => (
+            <TextInput
+              label="Email"
+              value={field.value}
+              onChangeText={field.onChange}
+              onBlur={field.onBlur}
+              error={errors.email?.message}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoComplete="email"
+            />
+          )}
         />
 
         <Controller
           control={control}
           name="password"
-          render={({ field: { onChange, onBlur, value } }) => {
-            const handleChange = (text: string) => {
-              clearErrors('password')
-              onChange(text)
-            }
-            return (
-              <PasswordInput
-                label="Password"
-                value={value}
-                onChangeText={handleChange}
-                onBlur={onBlur}
-                error={errors.password?.message}
-                autoComplete="password"
-              />
-            )
-          }}
+          render={({ field }) => (
+            <PasswordInput
+              label="Password"
+              value={field.value}
+              onChangeText={field.onChange}
+              onBlur={field.onBlur}
+              error={errors.password?.message}
+              autoComplete="password"
+            />
+          )}
         />
 
         <Button
@@ -156,7 +128,7 @@ export const SignupScreen = () => {
 
         <View style={styles.loginContainer}>
           <Text style={styles.loginText}>Already have an account? </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <TouchableOpacity onPress={onLoginPress}>
             <Text style={styles.loginLink}>Login</Text>
           </TouchableOpacity>
         </View>
@@ -175,16 +147,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: T.layout.screenPadding,
     paddingTop: T.spacing.massive,
     paddingBottom: T.layout.sectionSpacing,
-  },
-  backButton: {
-    width: T.size.backButton,
-    height: T.size.backButton,
-    borderRadius: T.border.radius.full,
-    backgroundColor: T.color.white,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: T.spacing.xl,
-    ...T.shadow.medium,
   },
   header: {
     marginBottom: T.layout.sectionSpacing,

@@ -27,11 +27,14 @@ export const WelcomeScreen = () => {
         />
       </View>
 
-      <FadeUp delay={300}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Welcome</Text>
-        </View>
-      </FadeUp>
+      <View style={styles.titleContainer}>
+        <LottieView
+          source={require('@/assets/lottie/welcome.json')}
+          autoPlay
+          loop
+          style={styles.animation}
+        />
+      </View>
 
       <FadeUp delay={500}>
         <View style={styles.subtitleContainer}>
@@ -77,19 +80,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: T.spacing.lg,
   },
-  title: {
-    fontSize: T.font.size.massive,
-    fontWeight: T.font.weight.bold,
-    color: T.color.textPrimary,
-    letterSpacing: -1,
-  },
   subtitleContainer: {
     alignItems: 'center',
     marginBottom: T.layout.sectionSpacing,
   },
   subtitle: {
     fontSize: T.font.size.lg,
-    color: T.color.textSecondary,
+    color: T.color.primaryLight,
     textAlign: 'center',
     lineHeight: T.spacing.xxl,
   },
