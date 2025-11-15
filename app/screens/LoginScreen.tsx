@@ -68,6 +68,7 @@ export const LoginScreen = () => {
         style={[styles.closeButton, { top: insets.top + T.spacing.md }]}
       />
       <KeyboardAwareScrollView
+        showsVerticalScrollIndicator={false}
         style={styles.container}
         contentContainerStyle={[
           styles.scrollContent,

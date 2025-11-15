@@ -10,7 +10,21 @@
     "lint": "tsc --noEmit && eslint \"**/*.{js,ts,tsx}\" && prettier --check \"**/*.{js,ts,tsx}\"",
     "lint:fix": "tsc --noEmit && eslint --fix \"**/*.{js,ts,tsx}\" && prettier --write \"**/*.{js,ts,tsx}\"",
     "test": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:prepush": "vitest --run",
+    "type-check": "tsc --noEmit",
+    "prebuild": "npx expo prebuild",
+    "prebuild:android": "npx expo prebuild --platform android",
+    "prebuild:ios": "npx expo prebuild --platform ios",
+    "build": "eas build --platform all",
+    "build:local": "eas build --platform all --local",
+    "build:android": "eas build --platform android",
+    "build:android:local": "eas build --platform android --local",
+    "build:android:apk": "eas build -p android --profile preview --no-wait",
+    "build:android:apk:local": "eas build -p android --profile preview --local",
+    "build:ios": "eas build --platform ios",
+    "build:ios:simulator": "eas build --profile development-simulator --platform ios",
+    "prepare": "husky"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
@@ -44,9 +58,20 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-native": "^5.0.0",
     "eslint-plugin-vitest": "^0.5.4",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.6",
     "prettier": "^3.6.2",
     "typescript": "~5.9.2",
     "vitest": "^4.0.9"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
   },
   "private": true
 }

@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons'
 import LottieView from 'lottie-react-native'
 import React, { useState } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useAuth } from '@/core/auth/auth.context'
 import { ScaleIn } from '@/ui/components/animation/ScaleIn'
@@ -26,77 +26,85 @@ export const HomeScreen = () => {
         <Text style={styles.headerTitle}>Profile</Text>
       </View>
 
-      <ScaleIn delay={100}>
-        <View style={styles.avatarContainer}>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>
-              {user.name.charAt(0).toUpperCase()}
-            </Text>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        <ScaleIn delay={100}>
+          <View style={styles.avatarContainer}>
+            <View style={styles.avatar}>
+              <Text style={styles.avatarText}>
+                {user.name.charAt(0).toUpperCase()}
+              </Text>
+            </View>
           </View>
-        </View>
-      </ScaleIn>
+        </ScaleIn>
 
-      <View style={styles.content}>
-        <View style={styles.welcomeContainer}>
-          <LottieView
-            source={require('@/assets/lottie/welcome.json')}
-            autoPlay
-            loop
-            style={styles.animation}
+        <View style={styles.content}>
+          <View style={styles.welcomeContainer}>
+            <LottieView
+              source={require('@/assets/lottie/welcome.json')}
+              autoPlay
+              loop
+              style={styles.animation}
+            />
+            <Text style={styles.userName}>{user.name}</Text>
+          </View>
+
+          <View style={styles.infoCard}>
+            <View style={styles.infoIconContainer}>
+              <Ionicons
+                name="person-outline"
+                size={T.size.icon.md}
+                color={T.color.primary}
+              />
+            </View>
+            <View style={styles.infoContent}>
+              <Text style={styles.infoLabel}>Name</Text>
+              <Text style={styles.infoValue}>{user.name}</Text>
+            </View>
+          </View>
+
+          <View style={styles.infoCard}>
+            <View style={styles.infoIconContainer}>
+              <Ionicons
+                name="mail-outline"
+                size={T.size.icon.md}
+                color={T.color.primary}
+              />
+            </View>
+            <View style={styles.infoContent}>
+              <Text style={styles.infoLabel}>Email</Text>
+              <Text style={styles.infoValue}>{user.email}</Text>
+            </View>
+          </View>
+
+          <View style={styles.infoCard}>
+            <View style={styles.infoIconContainer}>
+              <Ionicons
+                name="shield-checkmark-outline"
+                size={T.size.icon.md}
+                color={T.color.success}
+              />
+            </View>
+            <View style={styles.infoContent}>
+              <Text style={styles.infoLabel}>Status</Text>
+              <Text style={[styles.infoValue, styles.statusActive]}>
+                Active
+              </Text>
+            </View>
+          </View>
+
+          <Button
+            title="Logout"
+            onPress={() => setShowLogoutModal(true)}
+            loading={isLoading}
+            variant="outline"
+            style={styles.logoutButton}
           />
-          <Text style={styles.userName}>{user.name}</Text>
         </View>
-
-        <View style={styles.infoCard}>
-          <View style={styles.infoIconContainer}>
-            <Ionicons
-              name="person-outline"
-              size={T.size.icon.md}
-              color={T.color.primary}
-            />
-          </View>
-          <View style={styles.infoContent}>
-            <Text style={styles.infoLabel}>Name</Text>
-            <Text style={styles.infoValue}>{user.name}</Text>
-          </View>
-        </View>
-
-        <View style={styles.infoCard}>
-          <View style={styles.infoIconContainer}>
-            <Ionicons
-              name="mail-outline"
-              size={T.size.icon.md}
-              color={T.color.primary}
-            />
-          </View>
-          <View style={styles.infoContent}>
-            <Text style={styles.infoLabel}>Email</Text>
-            <Text style={styles.infoValue}>{user.email}</Text>
-          </View>
-        </View>
-
-        <View style={styles.infoCard}>
-          <View style={styles.infoIconContainer}>
-            <Ionicons
-              name="shield-checkmark-outline"
-              size={T.size.icon.md}
-              color={T.color.success}
-            />
-          </View>
-          <View style={styles.infoContent}>
-            <Text style={styles.infoLabel}>Status</Text>
-            <Text style={[styles.infoValue, styles.statusActive]}>Active</Text>
-          </View>
-        </View>
-
-        <Button
-          title="Logout"
-          onPress={() => setShowLogoutModal(true)}
-          loading={isLoading}
-          variant="outline"
-          style={styles.logoutButton}
-        />
-      </View>
+      </ScrollView>
 
       <ConfirmationModal
         visible={showLogoutModal}
@@ -121,22 +129,27 @@ const styles = StyleSheet.create({
     backgroundColor: T.color.background,
   },
   header: {
-    paddingHorizontal: T.layout.screenPadding,
-    paddingVertical: T.spacing.xl,
+    paddingHorizontal: T.spacing.lg,
+    paddingVertical: T.spacing.md,
   },
   headerTitle: {
-    fontSize: T.font.size.xxxl,
+    fontSize: T.font.size.xxl,
     fontWeight: T.font.weight.bold,
     color: T.color.textPrimary,
-    letterSpacing: -0.5,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: T.spacing.xxxl,
   },
   avatarContainer: {
     alignItems: 'center',
-    marginVertical: T.spacing.xxxl,
+    marginVertical: T.spacing.xl,
   },
   avatar: {
-    width: T.size.avatar.xlarge,
-    height: T.size.avatar.xlarge,
+    width: T.size.avatar.large,
+    height: T.size.avatar.large,
     borderRadius: T.border.radius.full,
     backgroundColor: T.color.primary,
     justifyContent: 'center',
@@ -144,20 +157,19 @@ const styles = StyleSheet.create({
     ...T.shadow.primary,
   },
   avatarText: {
-    fontSize: T.font.size.giant,
+    fontSize: T.font.size.huge,
     fontWeight: T.font.weight.bold,
     color: T.color.white,
   },
   content: {
-    flex: 1,
-    paddingHorizontal: T.layout.screenPadding,
+    paddingHorizontal: T.spacing.lg,
   },
   welcomeContainer: {
     alignItems: 'center',
-    marginBottom: T.spacing.xxxl,
+    marginBottom: T.spacing.xl,
   },
   userName: {
-    fontSize: T.font.size.xxl,
+    fontSize: T.font.size.xl,
     fontWeight: T.font.weight.semibold,
     color: T.color.textPrimary,
   },
@@ -166,7 +178,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: T.color.backgroundCard,
     borderRadius: T.border.radius.lg,
-    padding: T.layout.cardPadding,
+    padding: T.spacing.md,
     marginBottom: T.spacing.lg,
     ...T.shadow.small,
   },
@@ -198,7 +210,7 @@ const styles = StyleSheet.create({
     color: T.color.success,
   },
   logoutButton: {
-    marginTop: T.spacing.xxl,
+    marginTop: T.spacing.lg,
     marginBottom: T.spacing.xxxl,
   },
   animation: {
