@@ -1,0 +1,10 @@
+echo "Running tests before push..."
+npm run test:prepush
+
+echo "Running type checking..."
+npx tsc --noEmit
+
+echo "Running linting..."
+npm run lint
+
+echo "✅ Pre-push checks completed successfully!"

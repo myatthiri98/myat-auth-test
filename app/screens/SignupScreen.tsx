@@ -77,6 +77,7 @@ export const SignupScreen = () => {
         style={[styles.closeButton, { top: insets.top + T.spacing.md }]}
       />
       <KeyboardAwareScrollView
+        showsVerticalScrollIndicator={false}
         style={styles.container}
         contentContainerStyle={[
           styles.scrollContent,
@@ -137,7 +138,6 @@ export const SignupScreen = () => {
                   onChangeText={field.onChange}
                   onBlur={field.onBlur}
                   error={errors.password?.message}
-                  autoComplete="password-new"
                 />
               )}
             />
@@ -152,7 +152,6 @@ export const SignupScreen = () => {
                   onChangeText={field.onChange}
                   onBlur={field.onBlur}
                   error={errors.confirmPassword?.message}
-                  autoComplete="off"
                   showCheckIcon={passwordsMatch}
                 />
               )}
