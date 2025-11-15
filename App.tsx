@@ -1,20 +1,22 @@
-import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View } from 'react-native'
+import React from 'react'
+import { StatusBar } from 'react-native'
+import { KeyboardProvider } from 'react-native-keyboard-controller'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { AuthProvider } from '@/core/auth/auth.provider'
+import { dependencies } from '@/ui/dependencies'
+import { AppNavigator } from '@/ui/navigation/AppNavigator'
+import AppToast from '@/ui/utils/toastConfig'
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaProvider>
+      <KeyboardProvider>
+        <AuthProvider dependencies={dependencies}>
+          <StatusBar barStyle="dark-content" />
+          <AppNavigator />
+          <AppToast />
+        </AuthProvider>
+      </KeyboardProvider>
+    </SafeAreaProvider>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-})

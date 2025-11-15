@@ -1,0 +1,224 @@
+import { Ionicons } from '@expo/vector-icons'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import React, { useEffect } from 'react'
+import { useForm, Controller } from 'react-hook-form'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller'
+import { useAuth } from '@/core/auth/auth.context'
+import { signupSchema, type SignupFormData } from '@/core/auth/auth.schemas'
+import { Button } from '@/ui/components/Button'
+import { PasswordInput } from '@/ui/components/PasswordInput'
+import { TextInput } from '@/ui/components/TextInput'
+import { T } from '@/ui/constants/theme'
+import { RootStackParamList } from '@/ui/navigation/types'
+
+type SignupScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Signup'
+>
+
+export const SignupScreen = () => {
+  const navigation = useNavigation<SignupScreenNavigationProp>()
+  const { signup, isLoading } = useAuth()
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    clearErrors,
+    reset,
+  } = useForm<SignupFormData>({
+    resolver: zodResolver(signupSchema),
+    mode: 'onSubmit',
+    reValidateMode: 'onSubmit',
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+    },
+  })
+
+  useEffect(() => {
+    // Reset form when screen is focused
+    const unsubscribe = navigation.addListener('focus', () => {
+      reset()
+      clearErrors()
+    })
+    return unsubscribe
+  }, [navigation, reset, clearErrors])
+
+  const onSubmit = async (data: SignupFormData) => {
+    try {
+      await signup(data)
+    } catch {
+      // Error handled by auth context
+    }
+  }
+
+  return (
+    <KeyboardAwareScrollView
+      style={styles.container}
+      contentContainerStyle={styles.scrollContent}
+      keyboardShouldPersistTaps="handled"
+    >
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}
+      >
+        <Ionicons
+          name="close"
+          size={T.size.icon.md}
+          color={T.color.textPrimary}
+        />
+      </TouchableOpacity>
+
+      <View style={styles.header}>
+        <Text style={styles.title}>Create Account</Text>
+        <Text style={styles.subtitle}>Sign up to get started</Text>
+      </View>
+
+      <View style={styles.form}>
+        <Controller
+          control={control}
+          name="name"
+          render={({ field: { onChange, onBlur, value } }) => {
+            const handleChange = (text: string) => {
+              clearErrors('name')
+              onChange(text)
+            }
+            return (
+              <TextInput
+                label="Name"
+                value={value}
+                onChangeText={handleChange}
+                onBlur={onBlur}
+                error={errors.name?.message}
+                autoCapitalize="words"
+                autoComplete="name"
+              />
+            )
+          }}
+        />
+
+        <Controller
+          control={control}
+          name="email"
+          render={({ field: { onChange, onBlur, value } }) => {
+            const handleChange = (text: string) => {
+              clearErrors('email')
+              onChange(text)
+            }
+            return (
+              <TextInput
+                label="Email"
+                value={value}
+                onChangeText={handleChange}
+                onBlur={onBlur}
+                error={errors.email?.message}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoComplete="email"
+              />
+            )
+          }}
+        />
+
+        <Controller
+          control={control}
+          name="password"
+          render={({ field: { onChange, onBlur, value } }) => {
+            const handleChange = (text: string) => {
+              clearErrors('password')
+              onChange(text)
+            }
+            return (
+              <PasswordInput
+                label="Password"
+                value={value}
+                onChangeText={handleChange}
+                onBlur={onBlur}
+                error={errors.password?.message}
+                autoComplete="password"
+              />
+            )
+          }}
+        />
+
+        <Button
+          title="Sign Up"
+          onPress={handleSubmit(onSubmit)}
+          loading={isLoading}
+          disabled={isLoading}
+          style={styles.signupButton}
+        />
+
+        <View style={styles.loginContainer}>
+          <Text style={styles.loginText}>Already have an account? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <Text style={styles.loginLink}>Login</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </KeyboardAwareScrollView>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: T.color.background,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingHorizontal: T.layout.screenPadding,
+    paddingTop: T.spacing.massive,
+    paddingBottom: T.layout.sectionSpacing,
+  },
+  backButton: {
+    width: T.size.backButton,
+    height: T.size.backButton,
+    borderRadius: T.border.radius.full,
+    backgroundColor: T.color.white,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: T.spacing.xl,
+    ...T.shadow.medium,
+  },
+  header: {
+    marginBottom: T.layout.sectionSpacing,
+  },
+  title: {
+    fontSize: T.font.size.huge,
+    fontWeight: T.font.weight.bold,
+    color: T.color.textPrimary,
+    marginBottom: T.spacing.sm,
+    letterSpacing: -1,
+  },
+  subtitle: {
+    fontSize: T.font.size.md,
+    color: T.color.textSecondary,
+    lineHeight: T.spacing.xxl,
+  },
+  form: {
+    flex: 1,
+  },
+  signupButton: {
+    marginTop: T.spacing.lg,
+  },
+  loginContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: T.spacing.xxl,
+  },
+  loginText: {
+    fontSize: T.font.size.sm,
+    color: T.color.textSecondary,
+  },
+  loginLink: {
+    fontSize: T.font.size.sm,
+    color: T.color.primary,
+    fontWeight: T.font.weight.semibold,
+  },
+})
