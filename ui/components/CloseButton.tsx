@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     width: T.size.backButton,
     height: T.size.backButton,
     borderRadius: T.border.radius.full,
-    backgroundColor: T.color.white,
+    backgroundColor: T.color.border,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: T.spacing.xl,

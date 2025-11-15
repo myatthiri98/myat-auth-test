@@ -65,8 +65,8 @@ export const SignupScreen = () => {
       <CloseButton onPress={() => navigation.goBack()} />
 
       <View style={styles.header}>
-        <Text style={styles.title}>Create Account</Text>
-        <Text style={styles.subtitle}>Sign up to get started</Text>
+        <Text style={styles.title}>{`Create Account`}</Text>
+        <Text style={styles.subtitle}>{`Sign up to get started`}</Text>
       </View>
 
       <View style={styles.form}>
@@ -127,9 +127,9 @@ export const SignupScreen = () => {
         />
 
         <View style={styles.loginContainer}>
-          <Text style={styles.loginText}>Already have an account? </Text>
+          <Text style={styles.loginText}>{`Already have an account? `}</Text>
           <TouchableOpacity onPress={onLoginPress}>
-            <Text style={styles.loginLink}>Login</Text>
+            <Text style={styles.loginLink}>{`Login`}</Text>
           </TouchableOpacity>
         </View>
       </View>

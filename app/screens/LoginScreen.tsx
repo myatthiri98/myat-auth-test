@@ -40,7 +40,6 @@ export const LoginScreen = () => {
   })
 
   useEffect(() => {
-    // Reset form when screen is focused
     const unsubscribe = navigation.addListener('focus', () => {
       reset()
       clearErrors()
@@ -49,11 +48,11 @@ export const LoginScreen = () => {
   }, [navigation, reset, clearErrors])
 
   const onSubmit = async (data: LoginFormData) => {
-    try {
-      await login(data)
-    } catch {
-      // Error handled by auth context
-    }
+    await login(data)
+  }
+
+  const onSignupPress = () => {
+    navigation.navigate('Signup')
   }
 
   return (
@@ -65,8 +64,8 @@ export const LoginScreen = () => {
       <CloseButton onPress={() => navigation.goBack()} />
 
       <View style={styles.header}>
-        <Text style={styles.title}>Welcome Back</Text>
-        <Text style={styles.subtitle}>Sign in to your account</Text>
+        <Text style={styles.title}>{`Welcome Back`}</Text>
+        <Text style={styles.subtitle}>{`Sign in to your account`}</Text>
       </View>
 
       <View style={styles.form}>
@@ -111,8 +110,8 @@ export const LoginScreen = () => {
         />
 
         <View style={styles.signupContainer}>
-          <Text style={styles.signupText}>Don&apos;t have an account? </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+          <Text style={styles.signupText}>{`Don't have an account? `}</Text>
+          <TouchableOpacity onPress={onSignupPress}>
             <Text style={styles.signupLink}>Sign Up</Text>
           </TouchableOpacity>
         </View>

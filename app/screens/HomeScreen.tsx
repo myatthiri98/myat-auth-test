@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useAuth } from '@/core/auth/auth.context'
-import { FadeUp } from '@/ui/components/animation/FadeUp'
 import { ScaleIn } from '@/ui/components/animation/ScaleIn'
 import { Button } from '@/ui/components/Button'
 import { ConfirmationModal } from '@/ui/components/ConfirmationModal'
@@ -38,7 +37,7 @@ export const HomeScreen = () => {
 
       <View style={styles.content}>
         <View style={styles.welcomeContainer}>
-          <Text style={styles.welcomeText}>Welcome!</Text>
+          <Text style={styles.welcomeText}>{`Welcome!`}</Text>
           <Text style={styles.userName}>{user.name}</Text>
         </View>
 

@@ -16,6 +16,14 @@ type WelcomeScreenNavigationProp = NativeStackNavigationProp<
 export const WelcomeScreen = () => {
   const navigation = useNavigation<WelcomeScreenNavigationProp>()
 
+  const onLoginPress = () => {
+    navigation.navigate('Login')
+  }
+
+  const onSignupPress = () => {
+    navigation.navigate('Signup')
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.animationContainer}>
@@ -38,22 +46,16 @@ export const WelcomeScreen = () => {
 
       <FadeUp delay={500}>
         <View style={styles.subtitleContainer}>
-          <Text style={styles.subtitle}>Secure authentication made simple</Text>
+          <Text
+            style={styles.subtitle}
+          >{`Secure authentication made simple`}</Text>
         </View>
       </FadeUp>
 
       <FadeUp delay={700}>
         <View style={styles.buttonsContainer}>
-          <Button
-            title="Login"
-            onPress={() => navigation.navigate('Login')}
-            variant="primary"
-          />
-          <Button
-            title="Sign Up"
-            onPress={() => navigation.navigate('Signup')}
-            variant="outline"
-          />
+          <Button title="Login" onPress={onLoginPress} variant="primary" />
+          <Button title="Sign Up" onPress={onSignupPress} variant="outline" />
         </View>
       </FadeUp>
     </View>
