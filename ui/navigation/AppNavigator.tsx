@@ -1,7 +1,8 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import LottieView from 'lottie-react-native'
 import React from 'react'
-import { View, ActivityIndicator, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { HomeScreen } from '@/app/screens/HomeScreen'
 import { LoginScreen } from '@/app/screens/LoginScreen'
 import { SignupScreen } from '@/app/screens/SignupScreen'
@@ -19,7 +20,12 @@ export const AppNavigator = () => {
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={T.color.primary} />
+        <LottieView
+          source={require('@/assets/lottie/loading.json')}
+          autoPlay
+          loop
+          style={styles.animation}
+        />
       </View>
     )
   }
@@ -52,5 +58,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: T.color.background,
+  },
+  animation: {
+    width: 150,
+    height: 150,
   },
 })

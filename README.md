@@ -7,7 +7,7 @@ A modern React Native authentication application built with **Clean Architecture
 ### ✅ Core Features
 
 - **User Authentication Flow**
-  - Welcome screen with Lottie animation
+  - Welcome screen with animation
   - Login with email and password
   - Signup with name, email, and password
   - Secure logout functionality
@@ -73,27 +73,41 @@ myat-auth-test/
 │   │   ├── auth.types.ts              # Type definitions
 │   │   ├── auth.context.tsx           # Auth context definition
 │   │   ├── auth.provider.tsx          # Auth state management
+│   │   ├── auth.schemas.ts            # Validation schemas
+│   │   ├── authentification.fixture.ts # Test fixtures
 │   │   └── usecases/                  # Business use cases
 │   │       ├── login.usecase.ts
+│   │       ├── login.usecase.spec.ts
 │   │       ├── signup.usecase.ts
-│   │       └── logout.usecase.ts
+│   │       ├── signup.usecase.spec.ts
+│   │       ├── logout.usecase.ts
+│   │       └── logout.usecase.spec.ts
 │   └── ports/                         # Interface definitions
-│       ├── auth.storage.ts
-│       └── auth.validator.ts
+│       └── auth.storage.ts
 │
 ├── infra/                             # Infrastructure Layer (Adapters)
-│   ├── auth-gateway/
-│   │   └── async-storage.auth.gateway.ts
-│   └── auth-validator/
-│       └── zod.auth.validator.ts
+│   └── auth-gateway/
+│       └── async-storage.auth.gateway.ts
 │
 ├── ui/                                # UI Layer
 │   ├── dependencies.ts                # DI container
 │   ├── components/                    # Reusable components
+│   │   ├── animation/                 # Animation components
+│   │   │   ├── FadeUp.tsx
+│   │   │   └── ScaleIn.tsx
 │   │   ├── Button.tsx
 │   │   ├── TextInput.tsx
 │   │   ├── PasswordInput.tsx
-│   │   └── ErrorMessage.tsx
+│   │   ├── ErrorMessage.tsx
+│   │   ├── CloseButton.tsx
+│   │   ├── ConfirmationModal.tsx
+│   │   ├── ToastContainer.tsx
+│   │   └── index.ts                   # Component exports
+│   ├── constants/
+│   │   └── theme.ts                   # Theme constants
+│   ├── utils/                         # Utility functions
+│   │   ├── toast.ts
+│   │   └── toastConfig.tsx
 │   └── navigation/
 │       ├── AppNavigator.tsx
 │       └── types.ts
@@ -106,9 +120,13 @@ myat-auth-test/
 │       └── HomeScreen.tsx
 │
 ├── assets/
-│   └── auth-animation.json            # Lottie animation file
+│   └── lottie/                        # Lottie animation files
+│       ├── auth-animation.json
+│       ├── loading.json
+│       └── welcome.json
 │
 ├── App.tsx                            # Root component
+├── index.ts                           # Entry point
 └── package.json
 ```
 
@@ -130,15 +148,15 @@ This project follows **Hexagonal Architecture** (Ports & Adapters):
 │              Core Layer (core/auth/)                    │
 │  • AuthContext & AuthProvider                           │
 │  • Use Cases: login, signup, logout                     │
-│  • Ports: AuthStorage, AuthValidator (interfaces)       │
+│  • Ports: AuthStorage (interface)                       │
 │  • Dependencies: Type definitions                       │
+│  • Schemas: Validation schemas                          │
 └───────────────────────┬─────────────────────────────────┘
                         │
                         ▼
 ┌─────────────────────────────────────────────────────────┐
 │        Infrastructure Layer (infra/)                    │
 │  • AsyncStorageAuthGateway (implements AuthStorage)     │
-│  • ZodAuthValidator (implements AuthValidator)          │
 └───────────────────────┬─────────────────────────────────┘
                         │
                         ▼
@@ -207,7 +225,7 @@ This project follows **Hexagonal Architecture** (Ports & Adapters):
 
 ### 1. Welcome Screen
 
-- Displays animated welcome screen with Lottie animation
+- Displays animated welcome screen with animation
 - Options to navigate to Login or Signup
 
 ### 2. Sign Up
@@ -327,7 +345,6 @@ The app uses a centralized DI container (`ui/dependencies.ts`) to manage depende
 ```typescript
 const mobileDependencies: Dependencies = {
   authStorage: new AsyncStorageAuthGateway(),
-  authValidator: new ZodAuthValidator(),
 }
 ```
 

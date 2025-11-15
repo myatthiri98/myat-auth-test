@@ -31,7 +31,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
         const persistedUser = await authStorage.getUser()
         if (persistedUser) setUser(persistedUser)
       } catch {
-        // Error loading persisted user - silently fail
       } finally {
         setIsLoading(false)
       }

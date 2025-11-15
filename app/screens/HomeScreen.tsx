@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons'
+import LottieView from 'lottie-react-native'
 import React, { useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -37,7 +38,12 @@ export const HomeScreen = () => {
 
       <View style={styles.content}>
         <View style={styles.welcomeContainer}>
-          <Text style={styles.welcomeText}>{`Welcome!`}</Text>
+          <LottieView
+            source={require('@/assets/lottie/welcome.json')}
+            autoPlay
+            loop
+            style={styles.animation}
+          />
           <Text style={styles.userName}>{user.name}</Text>
         </View>
 
@@ -150,11 +156,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: T.spacing.xxxl,
   },
-  welcomeText: {
-    fontSize: T.font.size.md,
-    color: T.color.textSecondary,
-    marginBottom: T.spacing.xs,
-  },
   userName: {
     fontSize: T.font.size.xxl,
     fontWeight: T.font.weight.semibold,
@@ -183,7 +184,7 @@ const styles = StyleSheet.create({
   },
   infoLabel: {
     fontSize: T.font.size.xs,
-    color: T.color.textTertiary,
+    color: T.color.textSecondary,
     marginBottom: T.spacing.xs,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
@@ -199,5 +200,9 @@ const styles = StyleSheet.create({
   logoutButton: {
     marginTop: T.spacing.xxl,
     marginBottom: T.spacing.xxxl,
+  },
+  animation: {
+    width: 150,
+    height: 100,
   },
 })

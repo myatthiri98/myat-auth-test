@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   },
   animation: {
     width: 300,
-    height: 300,
+    height: 150,
   },
   titleContainer: {
     alignItems: 'center',

@@ -112,7 +112,7 @@ export const LoginScreen = () => {
         <View style={styles.signupContainer}>
           <Text style={styles.signupText}>{`Don't have an account? `}</Text>
           <TouchableOpacity onPress={onSignupPress}>
-            <Text style={styles.signupLink}>Sign Up</Text>
+            <Text style={styles.signupLink}>{`Sign Up`}</Text>
           </TouchableOpacity>
         </View>
       </View>
